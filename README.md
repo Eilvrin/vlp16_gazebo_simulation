@@ -31,7 +31,7 @@ Model of vlp16 for gazebo, outputs single scans.
 ## Detailed information
 
 #### Laboratory model
-Extract `models.tar.gz` into `.gazebo/models`.
+Extract [models.tar.gz](https://drive.google.com/open?id=1OpUiD1Df3Uxj6SkSCFRYlGGnHzDrKc_W) into `.gazebo/models`.
 #### Ros packages
 ##### Velodyne_simulator
 Package `velodyne_simulator` contains VLP-16 description and plugin for laser scans. This is a modified version of https://bitbucket.org/DataspeedInc/velodyne_simulator.   
