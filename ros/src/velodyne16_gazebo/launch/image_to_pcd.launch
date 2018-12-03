@@ -1,0 +1,9 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+ <node type="image_to_pcd_node" pkg="velodyne16_gazebo" name="image_to_pcd_node" output="screen" >
+  <rosparam file="$(find velodyne16_gazebo)/config/scan_to_image.yaml" command="load"/>
+  <rosparam file="$(find velodyne16_gazebo)/config/image_to_pcd.yaml" command="load"/>
+ </node>
+
+</launch>

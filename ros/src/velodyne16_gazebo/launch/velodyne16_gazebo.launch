@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="false"/>
+  <arg name="world_name" default="$(find velodyne16_gazebo)/worlds/laboratory.world"/>
+
+  <!-- Start gazebo and load the world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="verbose" value="$(arg verbose)"/>
+    <arg name="world_name" value="$(arg world_name)"/>
+  </include>
+
+  <param name="world_name" type="string" value="$(arg world_name)"/>
+
+  <!-- Spawn the example robot -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find velodyne_description)/urdf/robot_vlp16.urdf.xacro'" />
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" args="-urdf -param /robot_description -model robot_vlp16"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="100.0" />
+  </node>
+
+<node name="pcl_polar_filter_strongest" pkg="coarsemap_pcl" type="polar_filter" required="true" output="screen">
+    <rosparam file="$(find coarsemap_pcl)/config/polar_filter.yaml"
+      command="load" />
+    <remap from="/pcl/in" to="/velodyne_points" />
+    <remap from="/pcl/out" to="/velodyne_points/roi" />
+  </node>
+
+<node type="normal_computation" pkg="pcl_tools" name="normal_computation" output="screen">
+  <rosparam file="$(find pcl_tools)/config/normal_computation.yaml" command="load"/>
+  <remap from="pcl/in" to="/velodyne_points/roi" />
+</node>
+
+<node name="cloud_assembler" pkg="pcl_tools" type="cloud_assembler"
+      required="true" output="screen">
+  <remap from="/pcl/in" to="/pcl/out" />
+  <param name="max_clouds" type="int" value="400" />
+  <param name="fixed_frame" type="string" value="world" />
+</node>
+
+<node type="normal_visualization" pkg="pcl_tools" name="normal_visualization" output="screen">
+  <remap from="pcl/in" to="assembled_cloud" />
+</node>
+
+<node type="scan_to_image_node" pkg="velodyne16_gazebo" name="scan_to_image_node" output="screen" >
+  <rosparam file="$(find velodyne16_gazebo)/config/scan_to_image.yaml" command="load"/>
+</node>
+
+</launch>

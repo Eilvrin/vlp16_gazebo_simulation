@@ -1,0 +1,10 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+ <node type="pcd_to_image_node" pkg="velodyne16_gazebo" name="pcd_to_image_node" output="screen" >
+   <rosparam file="$(find velodyne16_gazebo)/config/scan_to_image.yaml" command="load"/>
+   # Path to pcd_clouds
+   <param name="path_to_clouds" type="string" value=""/>
+ </node>
+
+</launch>

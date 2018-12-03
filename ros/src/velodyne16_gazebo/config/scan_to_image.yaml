@@ -1,0 +1,24 @@
+target_frame_id: "velodyne_static"
+# Depending on whether spherical or planar projection is used the width and height differs
+# Example for planar projection: width: 255 height: 255
+# Example for spherical projection: width: 1800 height: 120
+width: 450
+height: 252
+
+planar_projection: false # if false the spherical projection will be used
+
+# Parameters for planar projection
+focal_length_x: 125.5
+focal_length_y: 125.5
+
+# Parameters for spherical projection (in rad)
+y_angular_resolution: 0.01
+x_angle_offset: 1.57079632679
+y_angle_offset: 5.02138630718
+x_angle_range: 3.14159265359
+
+# Folder in which to save the output files
+out_folder_path: ""
+
+# Whether the models of suncg house or laboratory is used 
+suncg_house: false # default laboratory model is used

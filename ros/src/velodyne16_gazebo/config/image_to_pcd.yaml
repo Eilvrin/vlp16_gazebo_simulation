@@ -1,0 +1,6 @@
+# Full path to .txt file containing the list of .pcd files 
+path_to_pcdlist: ""
+# Path to folder containing predictions of network in .h5 files
+path_to_h5: ""
+# Path to folder in which to save the .pcd files with labels from predictions of network
+out_path_pcd: ""
